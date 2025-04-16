@@ -34,8 +34,17 @@ export default function Header() {
       </Wrapper>
 
       <AnimatePresence>
-        {isOpen && <MobileNav onClose={handleClose} isOpen={isOpen} />}
-      </AnimatePresence>
+  {isOpen && (
+    <MobileNav
+      onClose={handleClose}
+      isOpen={isOpen}
+      isAuthenticated={isAuthenticated}
+      onLogin={() => setIsAuthenticated(true)}
+      onLogout={() => setIsAuthenticated(false)}
+    />
+  )}
+</AnimatePresence>
+
     </header>
   );
 }

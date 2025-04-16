@@ -106,9 +106,13 @@ export default function Navigation({ isAuthenticated, onLogin, onLogout }: Navig
       Invite Friends
     </Link>
     <Link href="/settings" className="block px-4 py-2 hover:bg-[#C79A5F] text-black">Settings</Link>
-    <button onClick={onLogout}
-      className="bg-red-500 text-white px-4 py-2 rounded-lg">Logout</button>
-  </div>
+    <button 
+      onClick={() => {
+        onLogout();
+      }}
+      className="text-red-500 px-4 py-2">Logout</button>
+  </div>              
+
 )}
 
               </div>
