@@ -1,18 +1,22 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
-
+import React, { useState } from "react";
 import HeroBG from "@/assets/HeroBG.png";
 import { FaCalendarAlt, FaUserFriends } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 
 export default function HeroContent() {
-  // States to control the display of the location dropdown and calendar
   const [showLocations, setShowLocations] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("Cairo, Egypt");
   const [showCalendar, setShowCalendar] = useState(false);
+  const [showGuests, setShowGuests] = useState(false);
 
-  // Array of location options
+  const [guests, setGuests] = useState({
+    adults: 2,
+    children: 1,
+    infants: 1,
+  });
+
   const locations = [
     "Cairo, Egypt",
     "Hurghada, Egypt",
@@ -20,66 +24,69 @@ export default function HeroContent() {
     "Luxor & Aswan, Egypt",
   ];
 
+  const handleGuestChange = (type: string, delta: number) => {
+    setGuests(prev => ({
+      ...prev,
+      [type]: Math.max(0, prev[type as keyof typeof prev] + delta),
+    }));
+  };
+
   return (
-    <section className="relative w-full h-[500px]"> {/* Main section with background image */}
-      {/* Background image */}
-      <Image src={HeroBG} alt="Hero" fill className="object-cover" priority /> 
+    <section className="relative w-full h-[500px]">
+      <Image src={HeroBG} alt="Hero" fill className="object-cover" priority />
+      <div className="absolute inset-0 bg-black/50 z-0"></div>
 
-      <div className="absolute inset-0 bg-black/50 z-10"></div> {/* Overlay with transparency */}
-
-      {/* Main content */}
       <div className="relative z-20 flex flex-col justify-center h-full px-8 md:px-16 max-w-6xl text-white">
-        {/* Heading Section */}
         <div className="mb-6 max-w-2xl">
           <div className="flex items-center text-lg md:text-xl font-medium mb-2">
-            <FaLocationDot className="mr-2" /> 
+            <FaLocationDot className="mr-2" />
             Egypt
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold">Hey!</h2> 
+          <h2 className="text-4xl md:text-5xl font-bold">Hey!</h2>
           <h2 className="text-4xl md:text-5xl font-bold">
             Tell us where you want to stay
           </h2>
           <p className="mt-4 text-lg md:text-xl">Book 450+ Curated Egyptian Hotels</p>
         </div>
 
-        {/* Search Bar */}
         <div className="relative w-full max-w-5xl">
-          {/* Search bar container with blur effect */}
           <div className="flex flex-col md:flex-row items-center bg-white/10 backdrop-blur-md text-white rounded-full px-6 py-4 gap-4 shadow-lg w-full">
             {/* Location Selector */}
             <div
               className="flex items-center gap-2 cursor-pointer relative"
-              onClick={() => setShowLocations(!showLocations)} // Toggle location dropdown
+              onClick={() => {
+                setShowLocations(!showLocations);
+                setShowCalendar(false);
+                setShowGuests(false);
+              }}
             >
-              <FaLocationDot /> 
-              <span>{selectedLocation}</span> {/* Display selected location */}
+              <FaLocationDot />
+              <span>{selectedLocation}</span>
             </div>
 
-            {/* Divider */}
-            <div className="hidden md:block w-px h-6 bg-white/30" /> 
+            <div className="hidden md:block w-px h-6 bg-white/30" />
 
-            {/* Dates */}
+            {/* Calendar */}
             <div
               className="flex items-center gap-2 cursor-pointer relative"
-              onClick={() => setShowCalendar(!showCalendar)} // Toggle calendar popup
+              onClick={() => {
+                setShowCalendar(!showCalendar);
+                setShowLocations(false);
+                setShowGuests(false);
+              }}
             >
-              <FaCalendarAlt /> {/* Calendar icon */}
-              <span>19 March 2025 - 27 March 2025</span> {/* Display date range */}
+              <FaCalendarAlt />
+              <span>19 March 2025 - 27 March 2025</span>
 
-              {/* Calendar Popup */}
               {showCalendar && (
                 <div className="absolute top-full mt-4 left-0 z-30 bg-[#3A3A3A] text-black p-6 rounded-2xl shadow-lg w-[650px]">
-                  {/* Calendar Header */}
                   <div className="flex justify-between px-2 text-white mb-4">
                     <div className="text-lg font-semibold">February 2025</div>
                     <div className="text-lg font-semibold">March 2025</div>
                   </div>
-
-                  {/* Calendar Days Grid */}
                   <div className="grid grid-cols-14 gap-2 text-white text-sm">
                     {[...Array(58)].map((_, i) => {
                       const isHighlighted = [16, 17, 18, 19, 20, 21, 38, 39].includes(i);
-
                       return (
                         <div
                           key={i}
@@ -87,7 +94,7 @@ export default function HeroContent() {
                             isHighlighted ? "bg-[#F5D7A1] text-black font-semibold" : "bg-white/10"
                           }`}
                         >
-                          {i < 28 ? i + 1 : i - 27} {/* Display the date */}
+                          {i < 28 ? i + 1 : i - 27}
                         </div>
                       );
                     })}
@@ -96,25 +103,61 @@ export default function HeroContent() {
               )}
             </div>
 
-            {/* Divider */}
-            <div className="hidden md:block w-px h-6 bg-white/30" /> 
+            <div className="hidden md:block w-px h-6 bg-white/30" />
 
             {/* Guests */}
-            <div className="flex items-center gap-2">
-              <FaUserFriends /> 
-              <span>2 Adults, 1 Child, 1 Infant</span> 
+            <div
+              className="flex items-center gap-2 cursor-pointer relative"
+              onClick={() => {
+                setShowGuests(!showGuests);
+                setShowLocations(false);
+                setShowCalendar(false);
+              }}
+            >
+              <FaUserFriends />
+              <span>
+                {guests.adults} Adults, {guests.children} Child, {guests.infants} Infant
+              </span>
+
+              {showGuests && (
+                <div className="absolute top-full mt-4 left-0 z-30 bg-[#3A3A3A] text-white p-6 rounded-2xl shadow-lg w-[450px]">
+                  {["adults", "children", "infants"].map(type => (
+                    <div
+                      key={type}
+                      className="flex justify-between items-center mb-4 text-white"
+                    >
+                      <p className="capitalize text-lg font-semibold">
+                        {type === "children" ? "Child" : type.slice(0, -1)}
+                      </p>
+                      <div className="flex items-center gap-4">
+                        <button
+                          className="bg-white text-black w-8 h-8 rounded-full text-lg"
+                          onClick={() => handleGuestChange(type, -1)}
+                        >
+                          -
+                        </button>
+                        <span className="w-6 text-center font-semibold">{guests[type as keyof typeof guests]}</span>
+                        <button
+                          className="bg-white text-black w-8 h-8 rounded-full text-lg"
+                          onClick={() => handleGuestChange(type, 1)}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Explore Button */}
             <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-full px-6 py-2 ml-auto transition-all duration-200">
-              Explore Stays 
+              Explore Stays
             </button>
           </div>
 
           {/* Location Dropdown */}
           {showLocations && (
             <div className="absolute top-full mt-2 left-0 w-full bg-[#3A3A3A] rounded-3xl p-4 shadow-lg text-white z-30">
-              {/* Map through locations and render them */}
               {locations.map((location, index) => (
                 <div
                   key={index}
@@ -122,15 +165,15 @@ export default function HeroContent() {
                     selectedLocation === location ? "bg-[#505050]" : ""
                   }`}
                   onClick={() => {
-                    setSelectedLocation(location); // Set selected location
-                    setShowLocations(false); // Close dropdown after selection
+                    setSelectedLocation(location);
+                    setShowLocations(false);
                   }}
                 >
                   <div className="bg-[#EFE6DC] rounded-xl p-3 text-black">
-                    <FaLocationDot /> 
+                    <FaLocationDot />
                   </div>
                   <div>
-                    <p className="font-semibold">{location.split(",")[0]}</p> {/* Display location name */}
+                    <p className="font-semibold">{location.split(",")[0]}</p>
                     <p className="text-sm text-gray-300">City in Egypt</p>
                   </div>
                 </div>

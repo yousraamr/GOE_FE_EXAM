@@ -9,28 +9,32 @@ import Navigation from "./navigation";
 import Wrapper from "./wrapper";
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false); // Manage state to track if the mobile menu is open or closed
+  const [isOpen, setIsOpen] = useState(false); // Mobile nav toggle
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Auth state
+
   const handleClose = () => {
-    setIsOpen(false); // Function to close the mobile menu
+    setIsOpen(false); // Close mobile menu
   };
 
   return (
-    <header className="bg-[#121212] text-white shadow-md">
-      <Wrapper> {/* Wrapper for consistent padding and layout */}
-        <div className="flex items-center justify-between py-6">
-          <Logo /> {/* Display the logo on the left side of the header */}
-          
-          {/* Desktop Navigation */}
-          <Navigation /> {/* This component will render the desktop navigation links */}
+    <header className="w-full bg-[#121212] py-4 px-8 flex items-center justify-between">
+      <Wrapper>
+        <div className="flex items-center justify-between py-6 w-full">
+          <Logo />
 
-          {/* Mobile Navigation Toggle */}
-          <MobileMenuToggle onToggle={() => setIsOpen(!isOpen)} /> {/* Button to toggle mobile menu */}
+          {/* Desktop Navigation with login state props */}
+          <Navigation
+            isAuthenticated={isAuthenticated}
+            onLogin={() => setIsAuthenticated(true)} // Set to true when user logs in
+            onLogout={() => setIsAuthenticated(false)} // Set to false when user logs out
+          />
+
+          <MobileMenuToggle onToggle={() => setIsOpen(!isOpen)} />
         </div>
       </Wrapper>
 
-      {/* Animate mobile navigation menu */}
       <AnimatePresence>
-        {isOpen && <MobileNav onClose={handleClose} isOpen={isOpen} />} {/* Show mobile nav if isOpen is true */}
+        {isOpen && <MobileNav onClose={handleClose} isOpen={isOpen} />}
       </AnimatePresence>
     </header>
   );
