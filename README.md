@@ -33,14 +33,16 @@
 1. **Clone the repository**
    ```bash
    git clone [https://github.com/yousraamr/GOE_FE_EXAM]
-   cd my-app
 
 2. **Run the development server**
+Navigate to your project folder: Open the terminal and run the following command:
    ```bash
-npm run dev
-```
+   cd my-app
+3. Start the development server: After navigating to your project folder, use the following command to start the development server:
+   ```bash
+   npm run dev
 
-3. Open http://localhost:3000 in your browser to see the app.
+4. Open http://localhost:3000 in your browser to see the app.
 
 
 ## Contact
