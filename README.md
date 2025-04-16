@@ -31,14 +31,15 @@
 ## ⚙️ Setup Instructions
 
 1. **Clone the repository**
+Run the following command to clone the repository to your local machine:
    ```bash
    git clone [https://github.com/yousraamr/GOE_FE_EXAM]
 
 2. **Run the development server**
-Navigate to your project folder: Open the terminal and run the following command:
+Navigate to your project folder: Open the terminal and run:
    ```bash
-   cd my-app
-3. Start the development server: After navigating to your project folder, use the following command to start the development server:
+   cd GOE_FE_EXAM
+3. Start the development server: Use the following command to start the development server:
    ```bash
    npm run dev
 
@@ -46,7 +47,7 @@ Navigate to your project folder: Open the terminal and run the following command
 
 
 ## Contact
-Created by Yousra Amr
-📧 Email: yousraamr000@gmail.com
-🔗LinkedIn: www.linkedin.com/in/yousra-amr-93a691279
-🐙 GitHub: @yousraamr
+Need help or have a question? Feel free to reach out!
+📧 Email: [yousraamr000@gmail.com](mailto:yousraamr000@gmail.com)  
+🔗 LinkedIn: [www.linkedin.com/in/yousra-amr-93a691279](https://www.linkedin.com/in/yousra-amr-93a691279)  
+🐙 GitHub: [@yousraamr](https://github.com/yousraamr)
